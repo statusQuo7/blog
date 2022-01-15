@@ -1,0 +1,4 @@
+Django==3.2.9
+djangorestframework==3.13.1
+pyTelegramBotAPI==4.2.0
+Pillow==8.4.0

@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}           
+            <div class="row tm-row">
+                <div class="col-12">
+                    <hr class="tm-hr-primary tm-mb-55">
+                    <img width="954" height="535" controls class="tm-mb-40" src="{{post.image.url}}">
+                    						                    
+                </div>
+            </div>
+            <div class="row tm-row">
+                <div class="col-lg-8 tm-post-col">
+                    <div class="tm-post-full">                    
+                        <div class="mb-4">
+                            <h2 class="pt-2 tm-color-primary tm-post-title">{{post.title}}</h2>
+                            <p class="tm-mb-40">{{post.create_date}} posted by {{post.author}}</p>
+                         
+                            <p>
+                               {{post.short_description}}
+                            </p>
+                            <span class="d-block text-right tm-color-primary">{{post.category}}</span>
+                        </div>
+                        
+                        <!-- Comments -->
+                        <div>
+                            <h2 class="tm-color-primary tm-post-title">Comments</h2>
+                            <hr class="tm-hr-primary tm-mb-45">
+                            {% for comment in post.comments.all %}
+                            <div class="tm-comment tm-mb-45"> 
+                                           
+                                <figure class="tm-comment-figure">
+                                    {% if comment.user.image %}
+                                        <img src="{{comment.user.image.url}}" alt="Image" class="mb-2 rounded-circle img-thumbnail" style="height: 100px; width: 100px;">
+                                    {% endif %}
+                                    <figcaption class="tm-color-primary text-center">{{comment.user.username}}</figcaption>
+                                </figure>
+                                <div>
+                                    <p>
+                                      {{comment.comment}}
+                                    </p>
+                                    <div class="d-flex justify-content-between">                            
+                                        <span class="tm-color-primary">{{comment.date}}</span>
+                                    </div>                                                 
+                                </div>                                
+                            </div>
+                            {% endfor %}
+                            
+                            <form action="{% url 'blog:comment_create' %}" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <h2 class="tm-color-primary tm-post-title mb-4">Your comment</h2>
+                                {{form.as_p}}                                                           
+                                <button  type="submit" class="tm-btn tm-btn-primary tm-btn-small">Submit</button>                                                                                        
+                            </form>                          
+                        </div>
+                    </div>
+                </div>
+                <aside class="col-lg-4 tm-aside-col">
+                    <div class="tm-post-sidebar">
+                        <hr class="mb-3 tm-hr-primary">
+                        
+                        <hr class="mb-3 tm-hr-primary">
+                        <h2 class="tm-mb-40 tm-post-title tm-color-primary">Related Posts</h2>
+                        {% for related_post in post.category.posts.all %}
+                            {% if related_post.id != post.id %}
+                                <a href="{% url 'blog:post' pk=related_post.pk %}" class="d-block tm-mb-40">
+                                        <figure>
+                                        
+                                        <img src="{{related_post.image.url}}" alt="Image" class="mb-3 img-fluid">
+                                    
+                                        <figcaption class="tm-color-primary">{{related_post.short_description}}</figcaption>
+                                    </figure>
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>                    
+                </aside>
+            </div>
+           {% endblock %}

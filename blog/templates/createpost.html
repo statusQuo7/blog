@@ -1,0 +1,13 @@
+{% extends 'base.html'%}
+{% block content %}
+<div class="card shadow-2-strong" style="border-radius: 1rem;">
+    <div class="card-body p-5 text-center">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h2 class="tm-color-primary tm-post-title mb-4">Your post</h2>
+            {{form.as_p}}                                                           
+            <button  type="submit" class="tm-btn tm-btn-primary tm-btn-small">Submit</button>                                                                                        
+        </form>     
+    </div>
+</div>
+{% endblock %}
